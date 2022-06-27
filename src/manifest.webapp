@@ -1,0 +1,19 @@
+{
+  "name": "LogCalc",
+  "description": "A specialized calculator to find logarithms with custom bases",
+  "launch_path": "/index.html",
+  "icons": {
+    "16": "/assets/icons/icon16x16.png",
+    "48": "/assets/icons/icon48x48.png",
+    "60": "/assets/icons/icon60x60.png",
+    "128": "/assets/icons/icon128x128.png"
+  },
+  "categories": [
+    "utilities"
+  ],
+    
+  "developer": {
+    "name": "Andrew Engelmann",
+    "url": "https://github.com/engel03455"
+  }
+}
