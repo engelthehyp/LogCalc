@@ -1,14 +1,14 @@
 const numberInputArea  = document.getElementById('num');
 const baseInputArea    = document.getElementById('bse');
 const resultOutputArea = document.getElementById('res');
-const elements         = [numberInputArea, baseInputArea, resultOutputArea]
+const elements = [numberInputArea, baseInputArea, resultOutputArea];
 
-function logCalc(bse, num) {
-	return Math.log(num) / Math.log(bse);
+function calculateLog(base, num) {
+	return Math.log(num) / Math.log(base);
 }
 
-function showCalcResult(calcIn1, calcIn2, calcOut, calcFunc) {
-	calcOut.textContent = calcFunc(calcIn1.value, calcIn2.value);
+function showCalculationResult(input1, input2, outputArea, func) {
+	outputArea.textContent = func(input1.value, input2.value);
 }
 
 window.addEventListener('load', function () {
@@ -30,14 +30,12 @@ window.addEventListener('keydown', function (e) {
 			numberInputArea.value = null;
 			break;
 		case 'Enter':
-			elements.forEach(function (element) {
-				element.blur();
-			});
-			showCalcResult(baseInputArea, numberInputArea, resultOutputArea, logCalc);
+			elements.forEach(element => element.blur());
+			showCalculationResult(baseInputArea, numberInputArea, resultOutputArea, calculateLog);
 			break;
 		case 'SoftRight':
 			baseInputArea.focus();
-			baseInputArea.value = null
+			baseInputArea.value = null;
 			break;
 	}
 });
