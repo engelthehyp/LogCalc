@@ -1,52 +1,55 @@
-const numberInputArea  = document.getElementById('num');
-const baseInputArea    = document.getElementById('bse');
-const resultOutputArea = document.getElementById('res');
-const elements = [numberInputArea, baseInputArea, resultOutputArea];
+const NUMBER_INPUT_AREA = document.getElementById('number');
+const BASE_INPUT_AREA = document.getElementById('base');
+const RESULT_OUTPUT_AREA = document.getElementById('result');
+const INPUT_OUTPUT_ELEMENTS = [NUMBER_INPUT_AREA, BASE_INPUT_AREA, RESULT_OUTPUT_AREA];
 
-function calculateLog(base, num) {
-	return Math.log(num) / Math.log(base);
+// At the beginning, zero or more digits
+// followed by an optional decimal point,
+// followed by zero or more digits and the end of the string.
+const VALID_DECIMAL_REGEX = /^\d*\.?\d*$/;
+
+window.addEventListener('load', () =>
+	INPUT_OUTPUT_ELEMENTS.forEach(element =>
+		setInputFilter(element, value =>
+			VALID_DECIMAL_REGEX.test(value), 'Numbers only!'))
+);
+
+window.addEventListener('keydown', e => 
+	void {
+		'SoftLeft': handleSoftLeft,
+		'SoftRight': handleSoftRight,
+		'Enter': handleEnter,
+	}[e.key]?.()
+);
+
+// Implemented using change-of-base formula.
+const calculateLog = (base, num) => Math.log(num) / Math.log(base);
+
+const showCalculationResult = (input1Area, input2Area, outputArea, func)
+	=> outputArea.textContent = func(input1Area.value, input2Area.value);
+
+const handleSoftLeft = () => {
+	NUMBER_INPUT_AREA.focus();
+	NUMBER_INPUT_AREA.value = null;
 }
 
-function showCalculationResult(input1, input2, outputArea, func) {
-	outputArea.textContent = func(input1.value, input2.value);
+const handleEnter = () => {
+	INPUT_OUTPUT_ELEMENTS.forEach(element => element.blur());
+	showCalculationResult(BASE_INPUT_AREA, NUMBER_INPUT_AREA, RESULT_OUTPUT_AREA, calculateLog);
 }
 
-window.addEventListener('load', function () {
-	elements.forEach(function (element) {
-		setInputFilter(element, function (value) {
-			return /^\d*\.?\d*$/.test(value);
-			
-			// At the beginning, zero or more digits
-			// followed by an optional decimal point,
-			// followed by zero or more digits and the end of the string.
-		}, 'Numbers only!');
-	})
-});
-
-window.addEventListener('keydown', function (e) {
-	switch (e.key) {
-		case 'SoftLeft':
-			numberInputArea.focus();
-			numberInputArea.value = null;
-			break;
-		case 'Enter':
-			elements.forEach(element => element.blur());
-			showCalculationResult(baseInputArea, numberInputArea, resultOutputArea, calculateLog);
-			break;
-		case 'SoftRight':
-			baseInputArea.focus();
-			baseInputArea.value = null;
-			break;
-	}
-});
+const handleSoftRight = () => {
+	BASE_INPUT_AREA.value = null;
+	BASE_INPUT_AREA.focus();
+}
 
 // Restricts input for the given textbox to the given inputFilter function.
 function setInputFilter(textbox, inputFilter, errMsg) {
 	["input", "keydown", "keyup", "mousedown", "mouseup", "select", "contextmenu", "drop", "focusout"].forEach(function (event) {
-		textbox.addEventListener(event, function(e) {
+		textbox.addEventListener(event, function (e) {
 			if (inputFilter(this.value)) {
 				// Accepted value
-				if (["keydown","mousedown","focusout"].indexOf(e.type) >= 0){
+				if (["keydown", "mousedown", "focusout"].indexOf(e.type) >= 0) {
 					this.classList.remove("input-error");
 					this.setCustomValidity("");
 				}

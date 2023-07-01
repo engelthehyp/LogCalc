@@ -38,10 +38,15 @@ input {
 	padding: 0px 5px;
 }
 
-#softkey-left, #softkey-right {
+#softkey-left,
+#softkey-right {
 	font-weight: 400;
 	font-size: 14px;
 	color: #323232;
+}
+
+#softkey-left {
+	text-align: left;
 }
 
 #softkey-right {
